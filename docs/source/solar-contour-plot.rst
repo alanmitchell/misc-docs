@@ -4,7 +4,7 @@ Solar Contour Plot
 ==================
 
 This document provides information useful for developing a web application
-that displays Solar Contour Plots.  This document was primarily created to
+that displays Solar Contour Plots and was primarily created to
 assist with the Launch Alaska Hackathon event.
 Solar Contour Plots are plots that show the expected
 output of a grid-connected solar photovoltaic system oriented at various
@@ -18,7 +18,7 @@ These topics are addressed in this document:
   type of plot for a number of different locations primarily in Alaska
   but also locations in other states.
 - Sample Python code for producing the plot using the open source
-  `Ploty <https://plot.ly/.`_ charting library. (Ultimately, the Javascript
+  `Ploty <https://plot.ly>`_ charting library. (Ultimately, the Javascript
   version of the Plotly library should be used in a web application).
 
 Web Service for Providing the necessary Plot Data
@@ -29,8 +29,8 @@ Solar Contour plots for a number of different sites.  There are two
 methods available from that service that return JSON data conforming to
 the `JSend <https://labs.omniti.com/labs/jsend>`_ specification.
 
-Method to List Available Sites
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+API Method to List Available Sites
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This method allows you to obtain a list of all of the available sites with
 some additional info about each site.
@@ -42,7 +42,7 @@ Request URL
 
     GET https://ukwpiuisi9.execute-api.us-west-2.amazonaws.com/dev/sites/?<parameters>
 
-where ``<parameters>`` are optional query parameters, although this method
+where ``<parameters>`` are optional query parameters; this method
 is generally called with the parameter ``short=T``.  Parameters are discussed
 in the next section.
 
@@ -61,7 +61,7 @@ One query parameter is available, described below:
     all of the data necessary for producing a plot is returned for each site,
     making for a large response payload.  The values of True and False can
     be indicated by a number of different strings, such as: True, true, T, Y,
-    1, on.  See `distutils.util.strtobool <https://docs.python.org/2/distutils/apiref.html>`_
+    1, on.  See the `distutils.util.strtobool <https://docs.python.org/2/distutils/apiref.html>`_
     documentation.
 
 Response Fields
@@ -118,8 +118,8 @@ The fields are self-explanatory except the ``file_id`` field.  This field
 is a unique ID code identifying the site.  It is needed for the next method
 call that returns detailed information about one site.
 
-Method to Retrieve Solar Plot data for One Site
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+API Method to Retrieve Solar Plot data for One Site
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This method allows you to obtain the detailed plot data for one of the
 sites retrieved in the prior method call.
@@ -132,7 +132,7 @@ Request URL
     GET https://ukwpiuisi9.execute-api.us-west-2.amazonaws.com/dev/sites/<file_id>/?<parameters>
 
 where ``file_id`` is the unique identifier for the site, as retrieved
-from the ``sites`` method call desicribed in the prior section.
+from the ``sites`` method call described in the prior section.
 ``<parameters>`` are optional query parameters, although this method
 is generally called with no parameters
 
@@ -167,7 +167,7 @@ a JSON response with the following JSON key/value fields.
 Example Usage
 ^^^^^^^^^^^^^
 
-Here is a sample successful request::
+Here is a sample request::
 
     https://ukwpiuisi9.execute-api.us-west-2.amazonaws.com/dev/sites/1-911975
 
@@ -200,7 +200,7 @@ Here is the JSON response:
         }
     }
 
-Many of the fields are the same as though from the "list of sites"
+Many of the fields are the same as those from the "list of sites"
 method call, but there are a few new ones.  The ``file_id_desc`` is
 a description of the weather station used to produce the solar climate
 data.  All of the climate data sites used are National Renewable
@@ -213,7 +213,7 @@ calculation.
 Finally, the ``tilt``, ``azimuth`` and ``energy`` fields provide the data
 necessary to draw the contour plot.  An evenly spaced grid of solar output
 values (the ``energy`` field) are provided for each combination of ``tilt``
-and ``azimuth`` (compass direction, 90 = East, 180 = South, 270 = West).
+and ``azimuth`` (azimuth is compass direction, e.g. 90 = East, 180 = South, 270 = West).
 ``tilt`` and ``azimuth`` are one-dimensional arrays, and ``energy`` is a
 two-dimensional array because it has a value for every tilt/azimuth
 combination.  In the example above, only the first three rows of the
@@ -224,14 +224,43 @@ The next row of ``energy`` values is for a tilt of 3 degrees up from the horizon
 The first value of the row is the solar output for an azimuth of 90 degrees (East),
 the next value is for azimuth = 96 degrees, etc.
 
-The next section shows how to use these values to create the contour plot
-using the Plotly charting library.
+The Sample Code section at the end of this documents shows how to use these values
+to create the contour plot using the Plotly charting library.
+
+API Method Errors
+~~~~~~~~~~~~~~~~~
+
+If bad or invalid parameters are passed to an API method call, the ``status``
+field in the response will indicate failure and an error message(s) will be
+returned in the ``data`` field.  The response Status Code will be 400.
+Here is an example:
+
+.. code-block:: json
+
+    {
+        "status": "fail",
+        "data": {
+            "short": "'xy' is an invalid value for the 'short' parameter"
+        }
+    }
+
+If an internal error occurs while processing a request, a Status Code of
+500 will be returned and an error will be indicated in the response payload,
+as in this example:
+
+.. code-block:: json
+
+    {
+        "status": "error",
+        "message": "integer division or modulo by zero"
+    }
+
 
 Sample Code for drawing Contour Plot
 ------------------------------------
 
 Below is some sample Python code for drawing the contour plot using the
-`Ploty <https://plot.ly/.`_ charting library.  For an actual web application,
+`Ploty <https://plot.ly>`_ charting library.  For an actual web application,
 the open source `Plotly Javascript library <https://plot.ly/javascript/>`_
 should be used, as no Plotly account and sign-in is required for its use.
 Much of the Python code below will translate straight-forwardly into Javascript code.
@@ -259,7 +288,7 @@ Much of the Python code below will translate straight-forwardly into Javascript 
         z=z,
         x=x,
         y=y,
-        colorscale='Hot',   # Portland
+        colorscale='Hot',
     #    contours=dict(
     #        showlabels=True
     #    ),
@@ -275,7 +304,8 @@ Much of the Python code below will translate straight-forwardly into Javascript 
             family='Arial',
             size=20,
             color='Black'
-        ))
+        )
+    )
 
     layout = go.Layout(
         title='Annual kWh Produced per DC kW for various Tilts / Azimuths',
@@ -312,8 +342,8 @@ Much of the Python code below will translate straight-forwardly into Javascript 
             tickfont=dict(
                 size=18,
             ),
-    )
         )
+    )
 
     data = [trace1, trace2]
     fig = go.Figure(data=data, layout=layout)
