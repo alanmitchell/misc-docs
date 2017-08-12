@@ -3,12 +3,11 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to misc-docs's documentation!
-=====================================
+Documentation of Miscellaneous Analysis North Projects
+======================================================
 
 .. toctree::
    :maxdepth: 2
-   :hidden:
    :caption: Projects
 
    solar-contour-plot
