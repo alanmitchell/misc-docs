@@ -48,3 +48,6 @@ Temporary Items
 
 # PyCharm Files
 .idea/
+
+# Unnecessary Sphinx directories
+docs/build/

@@ -8,13 +8,9 @@ Welcome to misc-docs's documentation!
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :hidden:
+   :caption: Projects
+
+   solar-contour-plot
 
 
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
