@@ -199,3 +199,123 @@ Here is the JSON response:
             }
         }
     }
+
+Many of the fields are the same as though from the "list of sites"
+method call, but there are a few new ones.  The ``file_id_desc`` is
+a description of the weather station used to produce the solar climate
+data.  All of the climate data sites used are National Renewable
+Energy Laboratory (NREL) TMY3 sites.  ``elevation`` is the elevation in feet
+of the weather station.  The solar output data provided by this API
+was calculated using the `NREL PVWatts program <http://pvwatts.nrel.gov/>`_;
+the ``inputs`` field gives a summary of the inputs used in that PVWatts
+calculation.
+
+Finally, the ``tilt``, ``azimuth`` and ``energy`` fields provide the data
+necessary to draw the contour plot.  An evenly spaced grid of solar output
+values (the ``energy`` field) are provided for each combination of ``tilt``
+and ``azimuth`` (compass direction, 90 = East, 180 = South, 270 = West).
+``tilt`` and ``azimuth`` are one-dimensional arrays, and ``energy`` is a
+two-dimensional array because it has a value for every tilt/azimuth
+combination.  In the example above, only the first three rows of the
+two-dimensional ``energy`` array are shown; the first row gives the solar
+output for a tilt of 0 (horizontal) for every possible azimuth.  These output
+values are all the same because azimuth does not matter when a panel is horizontal.
+The next row of ``energy`` values is for a tilt of 3 degrees up from the horizontal.
+The first value of the row is the solar output for an azimuth of 90 degrees (East),
+the next value is for azimuth = 96 degrees, etc.
+
+The next section shows how to use these values to create the contour plot
+using the Plotly charting library.
+
+Sample Code for drawing Contour Plot
+------------------------------------
+
+Below is some sample Python code for drawing the contour plot using the
+`Ploty <https://plot.ly/.`_ charting library.  For an actual web application,
+the open source `Plotly Javascript library <https://plot.ly/javascript/>`_
+should be used, as no Plotly account and sign-in is required for its use.
+Much of the Python code below will translate straight-forwardly into Javascript code.
+
+.. code-block:: python
+
+    import requests
+    import plotly.plotly as py
+    import plotly.graph_objs as go
+
+    result = requests.get('https://ukwpiuisi9.execute-api.us-west-2.amazonaws.com/dev/sites/1-911975').json()
+    site = result['data']['site']
+    z = site['energy']
+    x = site['azimuth']
+    y = site['tilt']
+
+    # A future release of Plotly will implement the "showlabels" parameter
+    # commented out below, which will label the contour lines.
+
+    #Pre-defined color scales - 'pairs' | 'Greys' | 'Greens' | 'Bluered' | 'Hot'
+    # | 'Picnic' | 'Portland' | 'Jet' | 'RdBu' | 'Blackbody'
+    # | 'Earth' | 'Electric' | 'YIOrRd' | 'YIGnBu'
+
+    trace1 = go.Contour(
+        z=z,
+        x=x,
+        y=y,
+        colorscale='Hot',   # Portland
+    #    contours=dict(
+    #        showlabels=True
+    #    ),
+    )
+
+    trace2 = go.Scatter(
+        x=[90, 135, 180, 225, 270],
+        y=[3.5] * len(x),
+        mode='text',
+        text=['East', 'Southeast', 'South', 'Southwest', 'West'],
+        textposition='bottom',
+        textfont=dict(
+            family='Arial',
+            size=20,
+            color='Black'
+        ))
+
+    layout = go.Layout(
+        title='Annual kWh Produced per DC kW for various Tilts / Azimuths',
+        titlefont=dict(
+            family='Arial',
+            size=24,
+        ),
+        autosize=False,
+        width=950,
+        height=800,
+        xaxis=dict(
+            title='Direction Faced by Panels, degrees',
+            titlefont=dict(
+                family='Arial',
+                size=22,
+            ),
+            autotick=False,
+            ticks='outside',
+            tick0=90,
+            dtick=15,
+            tickfont=dict(
+                size=18,
+            ),
+        ),
+        yaxis=dict(
+            title='Tilt of Panels from Horizontal, degrees',
+            titlefont=dict(
+                family='Arial',
+                size=22,
+            ),
+            autotick=False,
+            tick0=0,
+            dtick=15,
+            tickfont=dict(
+                size=18,
+            ),
+    )
+        )
+
+    data = [trace1, trace2]
+    fig = go.Figure(data=data, layout=layout)
+    py.iplot(fig)
+
