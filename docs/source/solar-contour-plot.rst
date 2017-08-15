@@ -1,7 +1,7 @@
 .. _solar-contour-plot:
 
-Solar Contour Plot
-==================
+Data and Sample code for Creating a Solar Contour Plot
+======================================================
 
 This document provides information useful for developing a web application
 that displays Solar Contour Plots and was primarily created to

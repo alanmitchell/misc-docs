@@ -10,7 +10,7 @@ support the 2017 Launch Alaska Hackathon.
 Spreadsheet Version of the Calculator
 -------------------------------------
 
-`Here is a link <https://analysisnorth.com/hackathon/heatpump/Ductless_Heat_Pump_Calculator_Alaska.xlsm>`_
+`Here is a link <http://analysisnorth.com/hackathon/heatpump/Ductless_Heat_Pump_Calculator_Alaska.xlsm>`_
 to a spreadsheet version of a Heat Pump
 Economics calculator.  The primary use for this spreadsheet is to understand the
 calculation logic of the calculator.  There are also some weather and fuel cost data in
@@ -20,7 +20,7 @@ subsequent sections of this document.
 Climate Data
 ------------
 
-`Here is a CSV File <https://analysisnorth.com/hackathon/heatpump/temp_bin_data.csv>`_
+`Here is a CSV File <http://analysisnorth.com/hackathon/heatpump/temp_bin_data.csv>`_
 that contains outdoor temperature data from 75 Alaskan sites.  This data is "bin data"
 and shows how many hours of a typical year fall into each possible 5 degree range of
 outdoor temperature.  For example, one of the bins in the CSV file is labeled
