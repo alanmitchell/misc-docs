@@ -41,7 +41,7 @@ Heating Fuel and Electricity Price Data
 
 Price data for the fuel being avoided by the heat pump and the electricity
 used by the heat pump are needed to calculcate the dollar savings from
-use of the heat pump.  ``This CSV file <>`_
+use of the heat pump.  `This CSV file <http://analysisnorth.com/hackathon/heatpump/fuel_prices.csv>`_
 gives fuel and electricity price data for 200+ cities in Alaska, along with
 the latitude and longitude of those cites so the city nearest to a user's
 home can be located.
