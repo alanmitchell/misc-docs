@@ -5,7 +5,7 @@ Solar Contour Plot
 
 This document provides information useful for developing a web application
 that displays Solar Contour Plots and was primarily created to
-assist with the Launch Alaska Hackathon event.
+assist with the 2017 Launch Alaska Hackathon event.
 Solar Contour Plots are plots that show the expected
 output of a grid-connected solar photovoltaic system oriented at various
 directions and tilt angles.  Here is a sample plot for Anchorage, Alaska:

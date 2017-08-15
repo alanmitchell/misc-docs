@@ -6,10 +6,11 @@
 Documentation of Miscellaneous Analysis North Projects
 ======================================================
 
+This site contains documentation of miscellaneous Analysis North projects.
+
 .. toctree::
    :maxdepth: 2
    :caption: Projects
 
    solar-contour-plot
-
-
+   heat-pump-calc
