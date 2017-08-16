@@ -20,10 +20,10 @@ subsequent sections of this document.
 Climate Data
 ------------
 
-`Here is a CSV File <http://analysisnorth.com/hackathon/heatpump/temp_bin_data.csv>`_
+`Here is a tab-delimited text File <http://analysisnorth.com/hackathon/heatpump/temp_bin_data.txt>`_
 that contains outdoor temperature data from 75 Alaskan sites.  This data is "bin data"
 and shows how many hours of a typical year fall into each possible 5 degree range of
-outdoor temperature.  For example, one of the bins in the CSV file is labeled
+outdoor temperature.  For example, one of the bins in the file is labeled
 ``(50, 55]`` and contains the value of 603 for the Adak weather station.  This means that
 of the 8760 total hours in a year, the outdoor temperature is between 50 and 55 degrees
 Fahrenhet for 603 of those hours.  This data format is useful for calculating the
@@ -32,7 +32,7 @@ efficiency of the heat pump both vary with the outdoor temperature.  Fuel saving
 for each temperature bin can be calculated and aggregated into a total for the
 whole year.
 
-The CSV file also contains additional data about each site, including latitude and
+The file also contains additional data about each site, including latitude and
 longitude.  These coordinates will be useful for finding the nearest climate site
 to a user's home address.
 
@@ -41,7 +41,12 @@ Heating Fuel and Electricity Price Data
 
 Price data for the fuel being avoided by the heat pump and the electricity
 used by the heat pump are needed to calculcate the dollar savings from
-use of the heat pump.  `This CSV file <http://analysisnorth.com/hackathon/heatpump/fuel_prices.csv>`_
+use of the heat pump.  `This tab-delimited text file <http://analysisnorth.com/hackathon/heatpump/fuel_prices.txt>`_
 gives fuel and electricity price data for 200+ cities in Alaska, along with
 the latitude and longitude of those cites so the city nearest to a user's
-home can be located.
+home can be located.  Units for the fuel price data in the file are:
+
+- Oil: $/gallon
+- Propane: $/gallon
+- Electricity: $/kWh
+- Natural Gas: $/ccf
